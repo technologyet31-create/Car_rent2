@@ -74,6 +74,9 @@
       if ($("adminCarCategory")) $("adminCarCategory").value = car.category || "Economy";
       if ($("adminCarImage")) $("adminCarImage").value = car.img || "";
       if ($("adminCarSeats")) $("adminCarSeats").value = car.seats != null ? String(car.seats) : "";
+      if ($("adminCarTransmission")) $("adminCarTransmission").value = car.transmission || "أوتوماتيك";
+      if ($("adminCarFuel")) $("adminCarFuel").value = car.fuel || "بنزين";
+      if ($("adminCarDescription")) $("adminCarDescription").value = car.description || "";
       if ($("adminCarLocation")) $("adminCarLocation").value = car.locationUrl || "";
     }
 
@@ -88,6 +91,9 @@
       const category = $("adminCarCategory")?.value || "Economy";
       const img = $("adminCarImage")?.value || "";
       const seats = $("adminCarSeats")?.value || "";
+      const transmission = $("adminCarTransmission")?.value || "أوتوماتيك";
+      const fuel = $("adminCarFuel")?.value || "بنزين";
+      const description = $("adminCarDescription")?.value || "";
       const locationUrl = $("adminCarLocation")?.value || "";
 
       const locationText = String(locationUrl || "").trim();
@@ -107,6 +113,9 @@
         category,
         img,
         seats: Number(seats),
+        transmission,
+        fuel,
+        description,
         locationUrl: locationText,
       };
 

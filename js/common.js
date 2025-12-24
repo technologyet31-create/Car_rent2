@@ -263,6 +263,9 @@
     if (typeof updates?.category === "string") next.category = updates.category.trim() || next.category;
     if (typeof updates?.img === "string") next.img = updates.img.trim() || next.img;
     if (updates?.seats !== undefined) next.seats = Number(updates.seats);
+    if (typeof updates?.transmission === "string") next.transmission = updates.transmission.trim();
+    if (typeof updates?.fuel === "string") next.fuel = updates.fuel.trim();
+    if (typeof updates?.description === "string") next.description = updates.description.trim();
     if (typeof updates?.locationUrl === "string") next.locationUrl = updates.locationUrl.trim();
 
     if (!next.name) return { ok: false, error: "NAME_REQUIRED" };
@@ -277,6 +280,9 @@
       pricePerDay: next.pricePerDay,
       img: next.img,
       seats: next.seats,
+      transmission: next.transmission,
+      fuel: next.fuel,
+      description: next.description,
       locationUrl: next.locationUrl,
     };
     saveOverrides(overrides);

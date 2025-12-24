@@ -47,6 +47,7 @@
     setText("carMetaFuel", car.fuel);
     setText("carMetaSeats", `${car.seats} مقاعد`);
     setText("carPrice", `${car.pricePerDay} `);
+    setText("carDescription", car.description);
 
     setValue("specModel", String(car.year));
     setValue("specPrice", `${car.pricePerDay} د.ل`);
