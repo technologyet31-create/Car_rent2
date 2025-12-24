@@ -266,6 +266,7 @@
     if (typeof updates?.transmission === "string") next.transmission = updates.transmission.trim();
     if (typeof updates?.fuel === "string") next.fuel = updates.fuel.trim();
     if (typeof updates?.description === "string") next.description = updates.description.trim();
+    if (typeof updates?.videoUrl === "string") next.videoUrl = updates.videoUrl.trim();
     if (typeof updates?.locationUrl === "string") next.locationUrl = updates.locationUrl.trim();
 
     if (!next.name) return { ok: false, error: "NAME_REQUIRED" };
@@ -283,6 +284,7 @@
       transmission: next.transmission,
       fuel: next.fuel,
       description: next.description,
+      videoUrl: next.videoUrl,
       locationUrl: next.locationUrl,
     };
     saveOverrides(overrides);
@@ -356,6 +358,7 @@
       fuel: String(input?.fuel || "").trim() || "بنزين",
       seats: Number.isFinite(Number(input?.seats)) ? Number(input.seats) : 5,
       description: String(input?.description || "").trim() || "",
+      videoUrl: String(input?.videoUrl || "").trim() || "",
       locationUrl: String(input?.locationUrl || "").trim() || "",
     };
 

@@ -77,6 +77,7 @@
       if ($("adminCarTransmission")) $("adminCarTransmission").value = car.transmission || "أوتوماتيك";
       if ($("adminCarFuel")) $("adminCarFuel").value = car.fuel || "بنزين";
       if ($("adminCarDescription")) $("adminCarDescription").value = car.description || "";
+      if ($("adminCarVideo")) $("adminCarVideo").value = car.videoUrl || "";
       if ($("adminCarLocation")) $("adminCarLocation").value = car.locationUrl || "";
     }
 
@@ -94,14 +95,15 @@
       const transmission = $("adminCarTransmission")?.value || "أوتوماتيك";
       const fuel = $("adminCarFuel")?.value || "بنزين";
       const description = $("adminCarDescription")?.value || "";
+      const video = $("adminCarVideo")?.value || "";
       const locationUrl = $("adminCarLocation")?.value || "";
 
-      const locationText = String(locationUrl || "").trim();
-      if (locationText) {
-        const hasIframe = locationText.toLowerCase().includes("<iframe");
-        const hasEmbed = locationText.includes("/maps/embed") || locationText.includes("google.com/maps/embed");
+      const videoText = String(video || "").trim();
+      if (videoText) {
+        const hasIframe = videoText.toLowerCase().includes("<iframe");
+        const hasEmbed = videoText.includes("youtube.com/embed") || videoText.includes("youtu.be/embed");
         if (!hasIframe && !hasEmbed) {
-          showMessage("الرجاء إدخال كود Google Maps Embed (iframe) فقط.", true);
+          showMessage("الرجاء إدخال كود YouTube Embed (iframe) فقط للفيديو.", true);
           return;
         }
       }
@@ -116,6 +118,7 @@
         transmission,
         fuel,
         description,
+        videoUrl: videoText,
         locationUrl: locationText,
       };
 

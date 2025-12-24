@@ -11,12 +11,12 @@
     return match && match[1] ? match[1].trim() : "";
   }
 
-  function toGoogleMapsEmbedUrl(link) {
+  function toYouTubeEmbedUrl(link) {
     if (!link) return "";
     const url = String(link).trim();
     if (!url) return "";
     // Embed-only requirement
-    if (!url.includes("/maps/embed")) return "";
+    if (!url.includes("youtube.com/embed")) return "";
     return url;
   }
 
@@ -47,7 +47,6 @@
     setText("carMetaFuel", car.fuel);
     setText("carMetaSeats", `${car.seats} مقاعد`);
     setText("carPrice", `${car.pricePerDay} `);
-    setText("carDescription", car.description);
 
     setValue("specModel", String(car.year));
     setValue("specPrice", `${car.pricePerDay} د.ل`);
@@ -76,6 +75,29 @@
     } else if (locationCard) {
       locationCard.classList.add("is-hidden");
     }
+
+    // Car video (optional)
+    const videoCard = document.getElementById("carVideoCard");
+    const videoEmbed = document.getElementById("carVideoEmbed");
+    const videoUrlRaw = (car.videoUrl || "").trim();
+    const videoSrc = extractIframeSrc(videoUrlRaw);
+    const videoEmbedUrl = toYouTubeEmbedUrl(videoSrc);
+
+    if (videoCard && videoEmbed && videoEmbedUrl) {
+      videoCard.classList.remove("is-hidden");
+      videoEmbed.src = videoEmbedUrl;
+    } else if (videoCard) {
+      videoCard.classList.add("is-hidden");
+    }
+
+    // Description
+    setText("carDescriptionText", car.description || "لا يوجد وصف متاح.");
+
+    // Features
+    setText("featureTransmission", car.transmission);
+    setText("featureFuel", car.fuel);
+    setText("featureSeats", `${car.seats} مقاعد`);
+    setText("featureCategory", car.category);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
