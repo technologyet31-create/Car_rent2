@@ -25,10 +25,8 @@
       const el = $("adminCarMessage");
       if (!el) return;
       el.textContent = message;
-      el.style.display = message ? "block" : "none";
-      if (isError) {
-        el.style.borderColor = "rgba(255,255,255,.10)";
-      }
+      el.classList.toggle("is-hidden", !message);
+      void isError;
     }
 
     let editingCarId = null;
@@ -54,13 +52,13 @@
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${car.name}</td>
-          <td>${car.year}</td>
-          <td>${car.pricePerDay}</td>
-          <td>${car.category}</td>
-          <td>${seats}</td>
-          <td>${locationCell}</td>
-          <td>
+          <td data-label="السيارة">${car.name}</td>
+          <td data-label="السنة">${car.year}</td>
+          <td data-label="السعر/اليوم">${car.pricePerDay}</td>
+          <td data-label="الفئة">${car.category}</td>
+          <td data-label="المقاعد">${seats}</td>
+          <td data-label="الموقع">${locationCell}</td>
+          <td data-label="إجراءات">
             <button type="button" class="status" data-action="edit" data-id="${car.id}">تعديل</button>
             <button type="button" class="status" data-action="delete" data-id="${car.id}">حذف</button>
           </td>

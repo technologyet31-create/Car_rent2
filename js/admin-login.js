@@ -10,7 +10,7 @@
     const el = document.getElementById("loginError");
     if (!el) return;
     el.textContent = message;
-    el.style.display = message ? "block" : "none";
+    el.classList.toggle("is-hidden", !message);
   }
 
   document.addEventListener("DOMContentLoaded", () => {

@@ -11,6 +11,13 @@
   border-radius: var(--radius);
   padding:18px;
   box-shadow: var(--shadow);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.form-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 24px 65px rgba(0,0,0,.55);
+  border-color: rgba(255,255,255,.16);
 }
 
 .form-grid{
@@ -34,6 +41,15 @@ input, select, textarea{
   background: rgba(255,255,255,.03);
   color: var(--text);
   outline:none;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+input:focus, select:focus, textarea:focus{
+  border-color: rgba(0,193,148,.45);
+  box-shadow:
+    0 0 0 4px rgba(0,193,148,.12),
+    0 0 0 1px rgba(0,193,148,.18);
+  background: rgba(255,255,255,.04);
 }
 
 textarea{

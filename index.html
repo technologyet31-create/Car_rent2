@@ -4,6 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>تأجير سيارات | الرئيسية</title>
+
+  <link rel="preload" as="image" href="img/banner.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="img/corolla.webp">
+  <link rel="preload" as="image" href="img/elantra.webp">
+  <link rel="preload" as="image" href="img/sportage.webp">
+
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/hero.css" />
   <link rel="stylesheet" href="css/cards.css" />
@@ -42,7 +48,7 @@
 <section class="hero-banner">
   <div class="hero-overlay"></div>
   <div class="container hero-content">
-    <h1>AAA</h1>
+    <h1>استأجر سيارتك بثقة</h1>
     <p>أفضل منصة لتأجير السيارات بأسعار يومية واضحة</p>
     <a href="cars.html" class="btn btn-primary">استعرض السيارات</a>
   </div>
@@ -51,7 +57,7 @@
 <main class="container">
   <section class="hero">
     <div class="hero-wrap">
-      <div class="hero-card">
+      <div class="hero-card reveal">
         <h1>استأجر سيارتك بسهولة — سيارات جاهزة يومياً</h1>
         <p>
           تصفح السيارات بالصور والأسعار، وشاهد التفاصيل، ثم املأ نموذج الحجز.
@@ -63,22 +69,22 @@
           <div class="stat"><b>دعم</b><span>تواصل مباشر</span></div>
         </div>
 
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="hero-actions">
           <a class="btn btn-primary" href="cars.html">تصفح سياراتنا</a>
           <a class="btn" href="contact.html">تواصل معنا</a>
         </div>
       </div>
 
-      <aside class="hero-side">
-        <h3 style="margin:0 0 10px;">خدماتنا</h3>
-        <div class="meta" style="margin:0">
+      <aside class="hero-side reveal">
+        <h3 class="hero-side-title">خدماتنا</h3>
+        <div class="meta hero-side-meta">
           <span>سيارات اقتصادية</span>
           <span>SUV</span>
           <span>تسليم سريع</span>
           <span>تأمين</span>
           <span>دعم 24/7</span>
         </div>
-        <div style="margin-top:14px;">
+        <div class="hero-side-cta">
           <a class="btn btn-gold" href="cars.html">ابدأ الآن</a>
         </div>
       </aside>
@@ -86,8 +92,126 @@
   </section>
 
   <section class="section">
-    <h2 style="margin:0 0 14px;">أحدث السيارات</h2>
+    <div class="latest-head">
+      <div class="latest-title-wrap">
+        <h2 class="section-title reveal">أحدث السيارات</h2>
+        <p class="latest-subtitle reveal">اختيار سريع من سيارات اليوم — صور واضحة وسعر/يوم وإجمالي تلقائي.</p>
+      </div>
+      <div class="latest-actions reveal">
+        <a class="btn btn-gold" href="cars.html">عرض كل السيارات</a>
+      </div>
+    </div>
+
+    <div class="latest-chips reveal">
+      <span class="chip">بدون تعقيد</span>
+      <span class="chip">تأكيد سريع</span>
+      <span class="chip">تسعير واضح</span>
+    </div>
     <div id="latestCarsGrid" class="grid cards"></div>
+  </section>
+
+  <section class="section home-extra">
+    <div class="home-extra-head reveal">
+      <h2 class="section-title">خطوات الحجز</h2>
+      <p class="home-extra-subtitle">3 خطوات بسيطة من التصفح إلى التأكيد.</p>
+    </div>
+
+    <div class="grid home-steps">
+      <article class="home-step reveal">
+        <div class="home-step-num">1</div>
+        <h3 class="home-step-title">اختر السيارة</h3>
+        <p class="home-step-text">تصفح الصور والأسعار واختر الفئة المناسبة لك.</p>
+      </article>
+      <article class="home-step reveal">
+        <div class="home-step-num">2</div>
+        <h3 class="home-step-title">راجع التفاصيل</h3>
+        <p class="home-step-text">شاهد المواصفات (القير، الوقود، المقاعد) قبل الحجز.</p>
+      </article>
+      <article class="home-step reveal">
+        <div class="home-step-num">3</div>
+        <h3 class="home-step-title">أرسل الطلب</h3>
+        <p class="home-step-text">حدد التاريخ وستظهر الأيام والإجمالي تلقائياً.</p>
+      </article>
+    </div>
+
+    <div class="home-cta reveal">
+      <div class="home-cta-text">
+        <h3>جاهز تبدأ؟</h3>
+        <p>استعرض كل السيارات واختر الأنسب لك اليوم.</p>
+      </div>
+      <div class="home-cta-actions">
+        <a class="btn btn-primary" href="cars.html">تصفح سياراتنا</a>
+        <a class="btn" href="contact.html">اسألنا قبل الحجز</a>
+      </div>
+    </div>
+
+    <div class="home-faq reveal">
+      <div class="home-faq-head">
+        <h2 class="section-title">أسئلة سريعة</h2>
+        <p class="home-extra-subtitle">إجابات مختصرة لأكثر الأسئلة شيوعاً.</p>
+      </div>
+
+      <div class="grid home-faq-grid">
+        <details class="faq-item">
+          <summary>كيف يتم حساب الإجمالي؟</summary>
+          <p>الإجمالي = عدد الأيام × سعر اليوم، ويظهر تلقائياً في صفحة الحجز.</p>
+        </details>
+        <details class="faq-item">
+          <summary>هل الأسعار ثابتة؟</summary>
+          <p>الأسعار المعروضة هي سعر/يوم وقد تختلف حسب توفر السيارة والوقت.</p>
+        </details>
+        <details class="faq-item">
+          <summary>هل يمكنني التواصل قبل الحجز؟</summary>
+          <p>نعم، استخدم صفحة “تواصل معنا” لأي استفسار قبل إرسال الطلب.</p>
+        </details>
+        <details class="faq-item">
+          <summary>هل يمكن تعديل الحجز لاحقاً؟</summary>
+          <p>يفضل التواصل معنا مبكراً قبل موعد الاستلام لتأكيد التعديل.</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="home-testimonials reveal">
+      <div class="home-testimonials-head">
+        <h2 class="section-title">آراء العملاء</h2>
+        <p class="home-extra-subtitle">تجارب مختصرة من مستخدمين جرّبوا الحجز.</p>
+      </div>
+
+      <div class="grid testimonials-grid">
+        <article class="testimonial">
+          <div class="testimonial-top">
+            <div class="testimonial-avatar" aria-hidden="true">م</div>
+            <div>
+              <h3 class="testimonial-name">محمد</h3>
+              <p class="testimonial-meta">حجز سريع • 2025</p>
+            </div>
+          </div>
+          <p class="testimonial-text">"الموقع واضح جداً. السعر اليومي والإجمالي ظهروا مباشرة، وحجزت خلال دقائق."</p>
+        </article>
+
+        <article class="testimonial">
+          <div class="testimonial-top">
+            <div class="testimonial-avatar" aria-hidden="true">س</div>
+            <div>
+              <h3 class="testimonial-name">سارة</h3>
+              <p class="testimonial-meta">تجربة ممتازة • 2025</p>
+            </div>
+          </div>
+          <p class="testimonial-text">"الصور والمواصفات ساعدتني أختار بسرعة. التصميم مرتب وسهل الاستخدام."</p>
+        </article>
+
+        <article class="testimonial">
+          <div class="testimonial-top">
+            <div class="testimonial-avatar" aria-hidden="true">ع</div>
+            <div>
+              <h3 class="testimonial-name">علي</h3>
+              <p class="testimonial-meta">سعر واضح • 2025</p>
+            </div>
+          </div>
+          <p class="testimonial-text">"أكثر شيء عجبني وضوح التسعير. ما في مفاجآت، وكل شيء مرتب."</p>
+        </article>
+      </div>
+    </div>
   </section>
 
   <footer class="footer">

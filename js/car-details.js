@@ -69,11 +69,11 @@
     const locationEmbed = toGoogleMapsEmbedUrl(locationSrc);
 
     if (locationCard && locationMap && locationLink && locationEmbed) {
-      locationCard.style.display = "block";
+      locationCard.classList.remove("is-hidden");
       locationMap.src = locationEmbed;
       locationLink.href = locationSrc;
     } else if (locationCard) {
-      locationCard.style.display = "none";
+      locationCard.classList.add("is-hidden");
     }
   }
 
