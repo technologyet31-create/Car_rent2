@@ -93,17 +93,18 @@
         );
       }
     }
-    if (filter.category) {
-      if (filter.category !== "") {
-        cars = cars.filter(car => car.category === filter.category);
-      }
+    if (filter.category && filter.category !== "") {
+      const cat = filter.category.trim().toLowerCase();
+      cars = cars.filter(car =>
+        car.category && car.category.toLowerCase().includes(cat)
+      );
     }
-    if (filter.price) {
-      if (filter.price === "أقل من 150") {
+    if (filter.price && filter.price !== "") {
+      if (filter.price.includes("150") && filter.price.includes("أقل")) {
         cars = cars.filter(car => Number(car.pricePerDay) < 150);
-      } else if (filter.price === "150 - 250") {
+      } else if (filter.price.includes("150") && filter.price.includes("250")) {
         cars = cars.filter(car => Number(car.pricePerDay) >= 150 && Number(car.pricePerDay) <= 250);
-      } else if (filter.price === "أكثر من 250") {
+      } else if (filter.price.includes("250") && filter.price.includes("أكثر")) {
         cars = cars.filter(car => Number(car.pricePerDay) > 250);
       }
     }
