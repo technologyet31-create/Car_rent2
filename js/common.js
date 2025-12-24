@@ -1,4 +1,11 @@
-/* Shared helpers + data (no libraries) */
+/* Shared data and helpers for the Car Rent site.
+   - Contains an in-memory `BASE_CARS` list and helpers to merge with
+   - user-provided cars stored in localStorage.
+   - Exposes a small API on `window.CarRent` used by pages to read cars
+     and perform simple local edits (add/update/delete).
+   Notes: keep functions pure where possible; storage failures are silently
+   ignored to make the site resilient in restricted environments.
+*/
 
 (function () {
   "use strict";
@@ -165,17 +172,25 @@
   const REMOVED_CAR_IDS_KEY = "removedCarIds";
 
   function safeJsonParse(value, fallback) {
+    // Try to parse JSON, return `fallback` on any error to keep callers safe.
     try {
+      // parse user-provided stored JSON (may be malformed)
       return JSON.parse(value);
     } catch {
+      // on any parse error return the provided fallback to avoid throwing
       return fallback;
     }
   }
 
   function loadCustomCars() {
+    // Read custom cars previously saved by the admin UI. If parsing fails
+    // or storage is unavailable, return an empty array.
     try {
+      // raw string from storage may be null
       const raw = localStorage.getItem(CUSTOM_CARS_KEY);
+      // safe parse ensures we never throw here
       const list = safeJsonParse(raw || "[]", []);
+      // ensure we return an array shape
       return Array.isArray(list) ? list : [];
     } catch {
       return [];
@@ -183,8 +198,11 @@
   }
 
   function loadOverrides() {
+    // Load per-car override objects saved by the admin UI. Overrides are
+    // merged on top of base/custom cars when rendering.
     try {
       const raw = localStorage.getItem(CAR_OVERRIDES_KEY);
+      // overrides expected to be a plain object mapping id -> partial fields
       const obj = safeJsonParse(raw || "{}", {});
       return obj && typeof obj === "object" ? obj : {};
     } catch {
@@ -193,7 +211,10 @@
   }
 
   function saveOverrides(overrides) {
+    // Persist overrides to localStorage. Fail silently on quota or security
+    // errors to avoid breaking the UI in restrictive environments.
     try {
+      // stringify minimal override object
       localStorage.setItem(CAR_OVERRIDES_KEY, JSON.stringify(overrides));
     } catch {
       // ignore
@@ -201,9 +222,11 @@
   }
 
   function loadRemovedIds() {
+    // Load ids of base cars that the admin marked as removed.
     try {
       const raw = localStorage.getItem(REMOVED_CAR_IDS_KEY);
       const list = safeJsonParse(raw || "[]", []);
+      // prefer returning an array even on malformed storage
       return Array.isArray(list) ? list : [];
     } catch {
       return [];
@@ -211,6 +234,7 @@
   }
 
   function saveRemovedIds(ids) {
+    // Persist the removed ids set.
     try {
       localStorage.setItem(REMOVED_CAR_IDS_KEY, JSON.stringify(ids));
     } catch {
@@ -219,7 +243,9 @@
   }
 
   function saveCustomCars(cars) {
+    // Save the array of custom cars added via the admin UI.
     try {
+      // persist the array; callers should supply a sanitized array
       localStorage.setItem(CUSTOM_CARS_KEY, JSON.stringify(cars));
     } catch {
       // ignore
@@ -232,13 +258,20 @@
     const removedIds = new Set(loadRemovedIds());
     const seen = new Set();
     const merged = [];
-
+    // Merge base cars and custom cars, applying overrides and skipping
+    // removed ids. The order keeps BASE_CARS first so custom cars can
+    // augment but not accidentally shadow without intention.
+    // iterate base cars first to preserve stable ordering
     [...BASE_CARS, ...custom].forEach((car) => {
+      // defensive guards: ensure we have an object with an id
       if (!car || !car.id) return;
+      // avoid duplicate ids across base/custom
       if (seen.has(car.id)) return;
+      // skip ids that admin marked removed
       if (removedIds.has(car.id)) return;
       seen.add(car.id);
 
+      // merge any stored overrides on top of this car
       const ov = overrides[car.id];
       if (ov && typeof ov === "object") {
         merged.push({ ...car, ...ov, id: car.id });
@@ -250,6 +283,8 @@
     return merged;
   }
 
+  // Return a copy of the merged car list (BASE_CARS + custom, minus removed)
+
   function updateCar(carId, updates) {
     if (!carId) return { ok: false, error: "ID_REQUIRED" };
     const existing = getCarById(carId);
@@ -257,22 +292,20 @@
 
     const next = { ...existing };
 
+    // Apply only provided fields; coerce/normalize types for consistency.
     if (typeof updates?.name === "string") next.name = updates.name.trim();
     if (updates?.year !== undefined) next.year = Number(updates.year);
     if (updates?.pricePerDay !== undefined) next.pricePerDay = Number(updates.pricePerDay);
     if (typeof updates?.category === "string") next.category = updates.category.trim() || next.category;
     if (typeof updates?.img === "string") next.img = updates.img.trim() || next.img;
     if (updates?.seats !== undefined) next.seats = Number(updates.seats);
-    if (typeof updates?.transmission === "string") next.transmission = updates.transmission.trim();
-    if (typeof updates?.fuel === "string") next.fuel = updates.fuel.trim();
-    if (typeof updates?.description === "string") next.description = updates.description.trim();
-    if (typeof updates?.videoUrl === "string") next.videoUrl = updates.videoUrl.trim();
     if (typeof updates?.locationUrl === "string") next.locationUrl = updates.locationUrl.trim();
 
     if (!next.name) return { ok: false, error: "NAME_REQUIRED" };
     if (!Number.isFinite(next.year) || next.year < 1950 || next.year > 2100) return { ok: false, error: "INVALID_YEAR" };
     if (!Number.isFinite(next.pricePerDay) || next.pricePerDay <= 0) return { ok: false, error: "INVALID_PRICE" };
 
+    // Persist only a minimal override payload; do not rewrite BASE_CARS.
     const overrides = loadOverrides();
     overrides[carId] = {
       name: next.name,
@@ -281,32 +314,33 @@
       pricePerDay: next.pricePerDay,
       img: next.img,
       seats: next.seats,
-      transmission: next.transmission,
-      fuel: next.fuel,
-      description: next.description,
-      videoUrl: next.videoUrl,
       locationUrl: next.locationUrl,
     };
     saveOverrides(overrides);
     return { ok: true };
   }
 
+  // Update an existing car override. Validates basic fields and saves
+  // the override to localStorage under `CAR_OVERRIDES_KEY`.
+
   function deleteCar(carId) {
     if (!carId) return { ok: false, error: "ID_REQUIRED" };
 
     // Remove from custom cars if it exists there
+    // If car exists in custom cars, remove it from that array; otherwise
+    // treat it as a base car and add its id to removed set.
     const custom = loadCustomCars();
     const remainingCustom = custom.filter((c) => c && c.id !== carId);
     if (remainingCustom.length !== custom.length) {
+      // removed from custom list
       saveCustomCars(remainingCustom);
     } else {
-      // If it's a base car, mark as removed
       const removed = new Set(loadRemovedIds());
       removed.add(carId);
       saveRemovedIds([...removed]);
     }
 
-    // Clean override if present
+    // Clean any overrides for the car so it no longer appears modified.
     const overrides = loadOverrides();
     if (overrides[carId]) {
       delete overrides[carId];
@@ -316,6 +350,10 @@
     return { ok: true };
   }
 
+  // Delete a car. If it's a base car it's marked removed via localStorage,
+  // otherwise it's removed from the custom cars array. This preserves the
+  // original BASE_CARS source while allowing users to hide entries.
+
   function slugify(text) {
     return String(text || "")
       .trim()
@@ -324,6 +362,8 @@
       .replace(/(^-|-$)/g, "")
       .slice(0, 60);
   }
+
+  // Generate a stable unique id for new cars; appends a suffix if needed.
 
   function ensureUniqueId(desiredId) {
     const all = getCars();
@@ -358,15 +398,18 @@
       fuel: String(input?.fuel || "").trim() || "بنزين",
       seats: Number.isFinite(Number(input?.seats)) ? Number(input.seats) : 5,
       description: String(input?.description || "").trim() || "",
-      videoUrl: String(input?.videoUrl || "").trim() || "",
       locationUrl: String(input?.locationUrl || "").trim() || "",
     };
 
+    // Append the new custom car and persist. Return the created car so the
+    // caller (UI) can update immediately.
     const current = loadCustomCars();
     current.push(car);
     saveCustomCars(current);
     return { ok: true, car };
   }
+
+  // Add a new custom car and persist it into localStorage.
 
   function getQueryParam(key) {
     try {
@@ -377,6 +420,8 @@
       return null;
     }
   }
+
+  // Helpers for storing/reading the user's currently selected car id.
 
   function setSelectedCarId(id) {
     if (!id) return;

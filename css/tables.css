@@ -1,3 +1,9 @@
+/*
+  File: css/tables.css
+  Purpose: Table and responsive card-like table conversions for admin dashboard.
+  Notes: Responsive block/card view uses `data-label` for accessibility in mobile.
+*/
+
 /* Tables (admin dashboard) */
 
 .table-card{
@@ -32,7 +38,7 @@ tr:hover td{
 }
 
 /* Responsive table */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   table {
     min-width: auto;
   }
@@ -77,3 +83,10 @@ tr:hover td{
     background: transparent;
   }
 }
+
+/*
+  Accessibility note:
+  - The responsive card layout uses `data-label` to present the header
+    information before each cell on small screens. Keep `data-label` values
+    in sync with table headings when rendering rows from JS.
+*/

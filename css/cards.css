@@ -1,3 +1,9 @@
+/*
+  File: css/cards.css
+  Purpose: Card components (listing, latest, flip-card behavior) and related UI.
+  Notes: Flip is implemented with 3D transforms; prefers CSS hover/focus for interactivity.
+*/
+
 /* Cards (cars list / latest cars / car details) */
 
 .cards{grid-template-columns: repeat(3, 1fr);}
@@ -23,6 +29,13 @@
   transform-style: preserve-3d;
   transition: transform .65s cubic-bezier(.2,.8,.2,1);
 }
+
+/*
+  Flip card implementation notes:
+  - Uses `transform-style: preserve-3d` and a rotated back face.
+  - Hover/focus flips the card; keyboard users get flip on focus-within.
+  - Avoid heavy repaints: keep 3D transforms GPU-friendly (no expensive layout changes).
+*/
 
 .card-flip .card-face{
   position: absolute;
@@ -115,6 +128,10 @@
     contain-intrinsic-size: 360px 320px;
   }
 }
+
+/* Performance: `content-visibility: auto` improves rendering for large lists
+   when supported. The `contain-intrinsic-size` provides a stable layout.
+*/
 .card:hover{
   transform: translateY(-6px);
   box-shadow: 0 24px 65px rgba(0,0,0,.55);

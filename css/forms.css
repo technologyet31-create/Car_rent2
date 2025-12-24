@@ -1,3 +1,9 @@
+/*
+  File: css/forms.css
+  Purpose: Form layout, inputs, buttons, and map embed styles used across pages.
+  Notes: Keep validation/formatting in JS; styling and focus states belong here.
+*/
+
 /* Forms + inputs (booking/contact/about/admin/car-details) */
 
 .form-wrap{
@@ -25,6 +31,13 @@
   grid-template-columns: repeat(2,1fr);
   gap:12px;
 }
+
+/*
+  Forms guidance:
+  - Use `.form-grid` to align inputs responsively; JS should only validate/format.
+  - Focus styles are handled in `common.css` for consistent keyboard UX.
+  - `.map-embed` is sized here; set `src` from JS using a safe extracted URL.
+*/
 
 label{
   display:block;
@@ -85,6 +98,6 @@ input::placeholder, textarea::placeholder{
   font-size:12px;
 }
 
-@media (max-width: 980px){
+@media (max-width: 768px){
   .form-grid{grid-template-columns:1fr}
 }

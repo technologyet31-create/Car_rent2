@@ -1,4 +1,8 @@
-/* booking page logic */
+/* Booking page logic
+   - Populates the car selector from `window.CarRent` and computes
+   - the number of days and total price based on start/end dates.
+   - Keeps UI responsive without external libs.
+*/
 
 (function () {
   "use strict";
@@ -8,12 +12,19 @@
   }
 
   function parseDate(value) {
+    // Accepts a date-like string from an <input type="date"> and returns
+    // a Date object or null when invalid. We avoid throwing here.
     if (!value) return null;
     const d = new Date(value);
+    // `new Date(YYYY-MM-DD)` is parsed as UTC in some browsers; for our
+    // simple day-level math this is acceptable. Return null for invalid.
     return Number.isNaN(d.getTime()) ? null : d;
   }
 
   function daysBetweenInclusive(start, end) {
+    // Compute the difference in milliseconds and convert to days.
+    // We use `Math.ceil` to count partial days as full days, matching
+    // a typical rental-day computation where start==end => 1 day.
     const ms = end.getTime() - start.getTime();
     const days = Math.ceil(ms / (1000 * 60 * 60 * 24));
     return days > 0 ? days : 0;
@@ -24,6 +35,7 @@
     window.CarRent.getCars().forEach((car) => {
       const opt = document.createElement("option");
       opt.value = car.id;
+      // Use the shared formatter so labels stay consistent across pages.
       opt.textContent = window.CarRent.formatCarLabel(car);
       selectEl.appendChild(opt);
     });
@@ -42,13 +54,16 @@
     const start = parseDate(startDate.value);
     const end = parseDate(endDate.value);
 
+    // If required inputs are missing or invalid show placeholders.
     if (!car || !start || !end) {
       daysInput.value = "—";
       totalInput.value = "—";
       return;
     }
 
+    // Compute inclusive days and update UI fields.
     const days = daysBetweenInclusive(start, end);
+    // Display computed values; fall back to placeholder if zero.
     daysInput.value = days ? String(days) : "—";
     totalInput.value = days ? `${days * car.pricePerDay} د.ل` : "—";
   }

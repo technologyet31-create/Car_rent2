@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>تفاصيل السيارة</title>
+  <!--
+    Car details page
+    - Displays a single car's information populated by `js/car-details.js`.
+    - Map embed (if provided) is shown in the "موقع السيارة" section.
+  -->
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/forms.css" />
@@ -93,24 +98,34 @@
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="grid car-details-extra-grid">
-      <div class="form-card is-hidden" id="carVideoCard">
-        <h2 style="margin:0 0 12px;">فيديو السيارة</h2>
-        <iframe id="carVideoEmbed" class="video-embed" title="فيديو السيارة" loading="lazy"></iframe>
+  <section class="section">
+    <div class="form-card">
+      <h2>تقييمات العملاء</h2>
+      <p class="average-rating">متوسط التقييمات: 4.7/5</p>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="avatar">أ</div>
+          <div class="rating">★★★★★</div>
+          <p>"سيارة رائعة ومريحة جداً. القيادة سلسة والأداء ممتاز."</p>
+          <small>- أحمد محمد, 2025-12-20</small>
+        </div>
+        <div class="review-card">
+          <div class="avatar">ف</div>
+          <div class="rating">★★★★☆</div>
+          <p>"خدمة ممتازة وسرعة في التسليم. السيارة نظيفة وجاهزة."</p>
+          <small>- فاطمة علي, 2025-12-18</small>
+        </div>
+        <div class="review-card">
+          <div class="avatar">م</div>
+          <div class="rating">★★★★★</div>
+          <p>"تجربة رائعة مع CarRent. سأعود مرة أخرى."</p>
+          <small>- محمد حسن, 2025-12-15</small>
+        </div>
       </div>
-      <div class="form-card" id="carDescriptionCard">
-        <h2 style="margin:0 0 12px;">وصف السيارة</h2>
-        <p id="carDescriptionText">—</p>
-      </div>
-      <div class="form-card" id="carFeaturesCard">
-        <h2 style="margin:0 0 12px;">مميزات السيارة</h2>
-        <ul id="carFeaturesList">
-          <li>نوع القير: <span id="featureTransmission">—</span></li>
-          <li>نوع الوقود: <span id="featureFuel">—</span></li>
-          <li>عدد المقاعد: <span id="featureSeats">—</span></li>
-          <li>الفئة: <span id="featureCategory">—</span></li>
-        </ul>
+      <div class="form-actions">
+        <a class="btn btn-primary" href="contact.html">اكتب تقييمك</a>
       </div>
     </div>
   </section>

@@ -1,3 +1,9 @@
+/*
+  File: css/hero.css
+  Purpose: Styles for the homepage hero/banner and the hero section layout.
+  Notes: Large background images and reveal animations live here.
+*/
+
 /* Home page hero banner */
 
 .hero-banner{
@@ -193,6 +199,13 @@
   opacity:1;
   transform: none;
 }
+
+/*
+  Notes:
+  - `.reveal` is a simple CSS animation target used with IntersectionObserver
+  - Keep the motion subtle and respect `prefers-reduced-motion` (handled elsewhere)
+  - Use `.in-view` to opt-in elements to the reveal animation from JS.
+*/
 
 /* Avoid fixed background on mobile for smoother scroll */
 @media (max-width: 900px){

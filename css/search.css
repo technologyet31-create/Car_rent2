@@ -1,3 +1,9 @@
+/*
+  File: css/search.css
+  Purpose: Search bar and filter layout used on the cars listing page.
+  Notes: Keep responsive behavior here; avoid using JS to toggle layout when CSS suffice.
+*/
+
 /* Search bar (Cars page) */
 
 .search-bar{
@@ -11,6 +17,12 @@
   box-shadow: var(--shadow);
   margin-bottom:18px;
 }
+
+/*
+  Search layout notes:
+  - The grid collapses to a single column on smaller viewports via media query.
+  - Keep filter logic in JS, but layout and responsive behavior should be handled in CSS.
+*/
 
 .search-bar input,
 .search-bar select{

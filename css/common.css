@@ -1,3 +1,9 @@
+/*
+  File: css/common.css
+  Purpose: Shared variables, resets, layout primitives and global UI tokens
+  Notes: Keep variables in :root; prefer CSS for presentation rather than JS.
+*/
+
 /* Shared styles used across the whole site */
 
 /* ===== Arabic Font (local if available) ===== */
@@ -19,6 +25,12 @@
   --shadow:0 18px 50px rgba(0,0,0,.45);
   --radius:18px;
 }
+
+/*
+  Design tokens above (colors, radius, shadows) are used site-wide.
+  - Change here to update the entire site's look.
+  - Keep tokens semantic (accent, muted) rather than component-specific.
+*/
 
 /* ===== Reset ===== */
 *{box-sizing:border-box}
@@ -232,4 +244,9 @@ a:hover{color: var(--text)}
   }
   .nav-middle{order:2}
   .signin{order:3}
+}
+
+@media (max-width: 480px) {
+  .section { padding: 20px 0; }
+  .container { width: calc(100% - 16px); }
 }
