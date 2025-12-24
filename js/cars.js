@@ -76,12 +76,37 @@
     return article;
   }
 
-  function renderCars() {
+  // Render cars with optional filtering
+  function renderCars(filter = {}) {
     const grid = document.getElementById("carsGrid");
     if (!grid) return;
     grid.innerHTML = "";
-    const cars = window.CarRent.getCars();
-    // Append a card for each car in the merged dataset.
+    let cars = window.CarRent.getCars();
+    // Apply filters if provided
+    if (filter.query) {
+      const q = filter.query.trim().toLowerCase();
+      if (q) {
+        cars = cars.filter(car =>
+          (car.name && car.name.toLowerCase().includes(q)) ||
+          (car.category && car.category.toLowerCase().includes(q)) ||
+          (car.year && String(car.year).includes(q))
+        );
+      }
+    }
+    if (filter.category) {
+      if (filter.category !== "") {
+        cars = cars.filter(car => car.category === filter.category);
+      }
+    }
+    if (filter.price) {
+      if (filter.price === "أقل من 150") {
+        cars = cars.filter(car => Number(car.pricePerDay) < 150);
+      } else if (filter.price === "150 - 250") {
+        cars = cars.filter(car => Number(car.pricePerDay) >= 150 && Number(car.pricePerDay) <= 250);
+      } else if (filter.price === "أكثر من 250") {
+        cars = cars.filter(car => Number(car.pricePerDay) > 250);
+      }
+    }
     cars.forEach((car) => grid.appendChild(buildCard(car)));
   }
 
@@ -112,8 +137,39 @@
     });
   }
 
+  // Setup search and filter listeners
+  function setupSearchFilters() {
+    const searchBar = document.querySelector(".search-bar");
+    if (!searchBar) return;
+    const input = searchBar.querySelector("input[type='text']");
+    const selects = searchBar.querySelectorAll("select");
+    const button = searchBar.querySelector("button[type='button']");
+
+    function getFilter() {
+      return {
+        query: input ? input.value : "",
+        category: selects[0] ? selects[0].value : "",
+        price: selects[1] ? selects[1].value : ""
+      };
+    }
+
+    function doFilter() {
+      renderCars(getFilter());
+      wireCards();
+    }
+
+    if (input) {
+      input.addEventListener("input", doFilter);
+    }
+    selects.forEach(sel => sel.addEventListener("change", doFilter));
+    if (button) {
+      button.addEventListener("click", doFilter);
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderCars();
     wireCards();
+    setupSearchFilters();
   });
 })();
